@@ -18,6 +18,8 @@ RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf && \
 
 EXPOSE 80
 
-CMD bash -c "sed -i \"s/Listen 80/Listen \${PORT:-80}/\" /etc/apache2/ports.conf && \
-    sed -i \"s/:80>/:${PORT:-80}>/\" /etc/apache2/sites-enabled/000-default.conf && \
+CMD bash -c "echo PORT is \$PORT && \
+    sed -i \"s/Listen 80/Listen \${PORT:-80}/\" /etc/apache2/ports.conf && \
+    sed -i \"s/:80>/:\${PORT:-80}>/\" /etc/apache2/sites-enabled/000-default.conf && \
+    echo Starting Apache on port \${PORT:-80} && \
     apache2ctl -D FOREGROUND"
