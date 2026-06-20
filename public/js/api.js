@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5001/api';
+const BASE_URL = 'https://pemweb-production-314f.up.railway.app';
 
 async function apiFetch(endpoint, options = {}) {
   const token = localStorage.getItem('gf_token');
