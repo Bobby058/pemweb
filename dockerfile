@@ -14,7 +14,9 @@ COPY . /var/www/app/
 RUN sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-available/000-default.conf && \
     echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 8080
 
-CMD bash -c "sed -i \"s/Listen 80/Listen \${PORT:-8080}/\" /etc/apache2/ports.conf && \
-    sed -i \"s/\*:80>/\*:\${PORT:-8080}>/\" /etc/apache2/sites-enabled/000-default.c
+CMD ["/start.sh"]
