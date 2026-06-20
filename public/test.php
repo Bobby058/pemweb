@@ -2,9 +2,11 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../src/db.php';
+$_SERVER['REQUEST_URI'] = '/api/summary';
+$_SERVER['REQUEST_METHOD'] = 'GET';
+$_SERVER['HTTP_AUTHORIZATION'] = 'Bearer test';
 
-$db = getDB();
-$stmt = $db->query("SELECT * FROM users LIMIT 1");
-$user = $stmt->fetch();
-echo json_encode($user);
+ob_start();
+require_once __DIR__ . '/../src/server.php';
+$output = ob_get_clean();
+echo $output;
