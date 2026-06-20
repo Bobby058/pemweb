@@ -493,10 +493,10 @@ function createOutboundHandler(PDO $pdo): void
             $id = 'TRX-' . date('ymdHis') . '-' . substr(bin2hex(random_bytes(2)), 0, 4);
         }
 
-        $stmt = $pdo->prepare(
-            'INSERT INTO outbound (id, tanggal, kategori, kode_barang, jumlah, satuan, supplier, nomor_sj, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        );
-        $stmt->execute([$id, $tanggal, $kategori, $kodeBarang, $jumlah, $satuan, $supplier, $nomorSJ, $keterangan]);
+       $stmt = $pdo->prepare(
+    'INSERT INTO outbound (tanggal, kategori, kode_barang, jumlah, satuan, supplier, nomor_sj, keterangan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+);
+$stmt->execute([$tanggal, $kategori, $kodeBarang, $jumlah, $satuan, $supplier, $nomorSJ, $keterangan]);
 
         // kurangi stok barang & update status (aman/menipis/habis)
         $stokBaru = $row['stok'] - $jumlah;
