@@ -1,4 +1,4 @@
-const BASE_URL = 'https://pemweb-production-314f.up.railway.app';
+const BASE_URL = 'https://pemweb-production-314f.up.railway.app/api';
 
 async function apiFetch(endpoint, options = {}) {
   const token = localStorage.getItem('gf_token');
