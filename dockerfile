@@ -12,9 +12,14 @@ RUN a2enmod rewrite php8.2
 
 COPY . /var/www/app/
 
+RUN chown -R www-data:www-data /var/www/app && \
+    chmod -R 755 /var/www/app
+
 RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
 <VirtualHost *:80>
     DocumentRoot /var/www/app/public
+
+    DirectoryIndex index.html index.php
 
     Alias /src /var/www/app/src
 
