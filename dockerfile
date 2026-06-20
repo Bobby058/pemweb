@@ -9,16 +9,17 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite php8.2
 
-RUN rm -f /var/www/html/index.html
-
 COPY . /var/www/html/
+
+RUN rm -f /var/www/html/index.html && \
+    rm -f /var/www/html/index.php
 
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf && \
     echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf && \
     echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf && \
     echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf && \
     echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
-    echo '    DirectoryIndex index.php index.html' >> /etc/apache2/apache2.conf && \
+    echo '    DirectoryIndex src/server.php' >> /etc/apache2/apache2.conf && \
     echo '</Directory>' >> /etc/apache2/apache2.conf
 
 EXPOSE 8080
