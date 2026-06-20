@@ -9,6 +9,11 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite php8.2
 
+RUN echo '<Directory /var/www/app/public>' >> /etc/apache2/apache2.conf && \
+    echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
+    echo '    Options FollowSymLinks' >> /etc/apache2/apache2.conf && \
+    echo '</Directory>'  >> /etc/apache2/apache2.conf
+
 COPY . /var/www/app/
 
 RUN sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-available/000-default.conf && \
