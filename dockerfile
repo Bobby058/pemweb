@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite php8.2
 
+RUN echo 'php_flag display_errors on' >> /etc/apache2/apache2.conf && \
+    echo 'php_value error_reporting E_ALL' >> /etc/apache2/apache2.conf
+
 COPY . /var/www/app/
 
 RUN sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-enabled/000-default.conf
