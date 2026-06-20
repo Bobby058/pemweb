@@ -18,21 +18,24 @@ RUN chown -R www-data:www-data /var/www/app && \
 RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
 <VirtualHost *:80>
     DocumentRoot /var/www/app/public
-
     DirectoryIndex index.html index.php
 
     Alias /src /var/www/app/src
 
-    <Directory /var/www/app>
-        AllowOverride All
+    <Directory /var/www/app/public>
+        AllowOverride None
         Require all granted
         Options FollowSymLinks
+
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^(.*)$ /var/www/app/src/server.php [L]
     </Directory>
 
-    RewriteEngine On
-    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-    RewriteRule ^(.*)$ /src/server.php [L]
+    <Directory /var/www/app/src>
+        Require all granted
+    </Directory>
 
     ErrorLog /dev/stderr
     CustomLog /dev/stdout combined
