@@ -1,11 +1,13 @@
-FROM php:8.2-apache
+FROM debian:bookworm-slim
 
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y \
+    apache2 \
+    php8.2 \
+    php8.2-mysql \
+    libapache2-mod-php8.2 \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN rm /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf 2>/dev/null || true
-RUN ln -s /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
-RUN ln -s /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
-RUN a2enmod rewrite
+RUN a2enmod rewrite php8.2
 
 COPY . /var/www/html/
 
@@ -15,4 +17,4 @@ RUN echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf && \
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["apache2ctl", "-D", "FOREGROUND"]
