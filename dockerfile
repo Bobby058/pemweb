@@ -1,13 +1,8 @@
-FROM debian:bookworm-slim
+FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y \
-    apache2 \
-    php8.2 \
-    php8.2-mysql \
-    libapache2-mod-php8.2 \
-    && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-install pdo pdo_mysql
 
-RUN a2enmod rewrite php8.2
+RUN a2enmod rewrite
 
 COPY . /var/www/app/
 
@@ -27,7 +22,6 @@ RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ /src/server.php [L]
-
 </VirtualHost>
 EOF
 
