@@ -11,8 +11,10 @@ RUN a2enmod rewrite php8.2
 
 COPY . /var/www/html/
 
-RUN echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf && \
+RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf && \
+    echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf && \
     echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
+    echo '    DirectoryIndex src/server.php' >> /etc/apache2/apache2.conf && \
     echo '</Directory>' >> /etc/apache2/apache2.conf
 
 EXPOSE 80
