@@ -1,5 +1,7 @@
 <?php
 ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', '/dev/stderr');
 error_reporting(E_ALL);
 // server.php — pengganti server.js
 // Bisa dijalankan dengan PHP built-in server sebagai router:
