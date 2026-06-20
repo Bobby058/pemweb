@@ -1,7 +1,10 @@
 <?php
 // db.php — pengganti db.js
 // Koneksi database menggunakan PDO (pengganti mysql2/promise pool)
-
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', '/dev/stderr');
+error_reporting(E_ALL);
 function loadEnv(string $path): void
 {
     if (!file_exists($path)) return;
