@@ -9,7 +9,17 @@ error_reporting(E_ALL);
 // atau di-include lewat virtual host (Apache/Nginx + PHP-FPM) yang mengarah ke sini.
 
 require_once __DIR__ . '/db.php'; // sekaligus load .env
-
+// DEBUG SEMENTARA - hapus setelah fix
+if (isset($_GET['debug'])) {
+    echo json_encode([
+        'DB_HOST' => getenv('DB_HOST'),
+        'DB_PORT' => getenv('DB_PORT'),
+        'DB_USER' => getenv('DB_USER'),
+        'DB_NAME' => getenv('DB_NAME'),
+        'DB_PASS' => getenv('DB_PASSWORD') ? 'ada' : 'kosong',
+    ]);
+    exit;
+}
 const PUBLIC_DIR = __DIR__ . '/../public';
 
 // ===== CORS (biar bisa diakses dari origin lain, mis. Apache di port 80) =====
