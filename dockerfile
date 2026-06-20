@@ -1,12 +1,14 @@
-FROM php:8.2-apache
+FROM debian:bookworm-slim
 
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y \
+    apache2 \
+    php8.2 \
+    php8.2-mysql \
+    php8.2-cli \
+    libapache2-mod-php8.2 \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
-          /etc/apache2/mods-enabled/mpm_*.conf && \
-    ln -s /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/ && \
-    ln -s /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/ && \
-    a2enmod rewrite
+RUN a2enmod rewrite php8.2
 
 COPY . /var/www/app/
 
@@ -26,6 +28,9 @@ RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ /src/server.php [L]
+
+    ErrorLog /dev/stderr
+    CustomLog /dev/stdout combined
 </VirtualHost>
 EOF
 
