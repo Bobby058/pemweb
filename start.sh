@@ -1,5 +1,5 @@
 #!/bin/bash
 PORT=${PORT:-8080}
-sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-enabled/000-default.conf
-exec apache2ctl -D FOREGROUND
+sed -i "s/listen 80/listen $PORT/" /etc/nginx/sites-enabled/default
+php-fpm8.2 -D
+nginx -g 'daemon off;'
