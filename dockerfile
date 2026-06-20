@@ -30,10 +30,9 @@ RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
     </Directory>
 
     RewriteEngine On
-RewriteBase /
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-RewriteRule ^(.*)$ /src/server.php [L]
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+    RewriteRule ^(.*)$ /src/server.php [L]
 
     ErrorLog /dev/stderr
     CustomLog /dev/stdout combined
