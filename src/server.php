@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 // server.php — pengganti server.js
 // Bisa dijalankan dengan PHP built-in server sebagai router:
 //   php -S localhost:5001 src/server.php
