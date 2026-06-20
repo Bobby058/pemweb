@@ -4,7 +4,7 @@
 
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../middleware/authMiddleware.php';
-
+require_once __DIR__ . '/../utils/Jwt.php';
 /**
  * Dispatcher: mencocokkan $method + $path dengan daftar route di bawah.
  * Dipanggil dari server.php untuk semua request yang diawali "/api".
