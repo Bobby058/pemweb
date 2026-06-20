@@ -14,9 +14,11 @@ COPY . /var/www/app/
 RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
 <VirtualHost *:80>
     DocumentRoot /var/www/app/public
-    
-    <Directory /var/www/app/public>
-        AllowOverride None
+
+    Alias /src /var/www/app/src
+
+    <Directory /var/www/app>
+        AllowOverride All
         Require all granted
         Options FollowSymLinks
     </Directory>
@@ -24,11 +26,8 @@ RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /var/www/app/src/server.php [L]
+    RewriteRule ^(.*)$ /src/server.php [L]
 
-    <Directory /var/www/app/src>
-        Require all granted
-    </Directory>
 </VirtualHost>
 EOF
 
