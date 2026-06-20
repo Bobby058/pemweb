@@ -9,15 +9,30 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite php8.2
 
-RUN echo '<Directory /var/www/app/public>' >> /etc/apache2/apache2.conf && \
-    echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
-    echo '    Options FollowSymLinks' >> /etc/apache2/apache2.conf && \
-    echo '</Directory>'  >> /etc/apache2/apache2.conf
-
 COPY . /var/www/app/
 
-RUN sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-available/000-default.conf && \
-    echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+RUN cat > /etc/apache2/sites-enabled/000-default.conf << 'EOF'
+<VirtualHost *:80>
+    DocumentRoot /var/www/app/public
+    
+    <Directory /var/www/app/public>
+        AllowOverride None
+        Require all granted
+        Options FollowSymLinks
+    </Directory>
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /var/www/app/src/server.php [L]
+
+    <Directory /var/www/app/src>
+        Require all granted
+    </Directory>
+</VirtualHost>
+EOF
+
+RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
