@@ -12,6 +12,8 @@ RUN a2enmod rewrite php8.2
 COPY . /var/www/html/
 
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf && \
+    echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf && \
+    echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf && \
     echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf && \
     echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
     echo '</Directory>' >> /etc/apache2/apache2.conf
@@ -20,5 +22,4 @@ EXPOSE 8080
 
 CMD bash -c "sed -i \"s/Listen 80/Listen \${PORT:-8080}/\" /etc/apache2/ports.conf && \
     sed -i \"s/:80>/:\${PORT:-8080}>/\" /etc/apache2/sites-enabled/000-default.conf && \
-    apache2ctl configtest && \
     apache2ctl -D FOREGROUND"
