@@ -9,20 +9,15 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite php8.2
 
-RUN echo 'php_flag display_errors on' >> /etc/apache2/apache2.conf && \
-    echo 'php_value error_reporting E_ALL' >> /etc/apache2/apache2.conf
-
 COPY . /var/www/app/
-
-RUN sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-enabled/000-default.conf
 
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf && \
     echo 'ErrorLog /dev/stderr' >> /etc/apache2/apache2.conf && \
     echo 'TransferLog /dev/stdout' >> /etc/apache2/apache2.conf && \
-    echo '<Directory /var/www/app/public>' >> /etc/apache2/apache2.conf && \
+    echo '<Directory /var/www/app>' >> /etc/apache2/apache2.conf && \
     echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
-    echo '    DirectoryIndex index.html' >> /etc/apache2/apache2.conf && \
-    echo '</Directory>' >> /etc/apache2/apache2.conf
+    echo '</Directory>' >> /etc/apache2/apache2.conf && \
+    sed -i 's|/var/www/html|/var/www/app/public|g' /etc/apache2/sites-enabled/000-default.conf
 
 EXPOSE 8080
 
